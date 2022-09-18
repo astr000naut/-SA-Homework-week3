@@ -1,5 +1,8 @@
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Currency;
+import java.util.Locale;
 
 class UnknowTypeException extends Exception {
     public UnknowTypeException(String type) {
@@ -13,6 +16,11 @@ public class Main {
         int totalAmount = 0;
         int volumeCredits = 0;
         String result = "Statement for " + invoice.getCustomer() + "\n";
+        NumberFormat nF = NumberFormat.getCurrencyInstance();
+        nF.setCurrency(Currency.getInstance(Locale.US));
+        nF.setMinimumFractionDigits(2);
+        nF.setMaximumFractionDigits(2);
+
 
         for (Repertoire repertoire : invoice.getPerformance()) {
 
@@ -42,10 +50,10 @@ public class Main {
                 volumeCredits += Math.floor(repertoire.getAudience() / 5);
             }
 
-            result += play.getName() + ": " + thisAmount/100 + " " + repertoire.getAudience() + " seats\n";
+            result += play.getName() + ": " + nF.format(thisAmount/100) + " " + repertoire.getAudience() + " seats\n";
             totalAmount += thisAmount;
         }
-        result += "Amount owed is " + totalAmount/100 + "\n";
+        result += "Amount owed is " + nF.format(totalAmount/100) + "\n";
         result += "You earned " + volumeCredits + " credits\n";
         return result;
     }
