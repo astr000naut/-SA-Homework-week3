@@ -43,17 +43,17 @@ public class Main {
         nF.setMinimumFractionDigits(2);
         nF.setMaximumFractionDigits(2);
 
-        for (Repertoire repertoire : invoice.getPerformance()) {
+        for (Performance performance : invoice.getPerformance()) {
 
-            Play play = playList.getPlay(repertoire.getPlayId());
-            int thisAmount = calculateAmount(play.getType(), repertoire.getAudience());;
-            volumeCredits += Math.max(repertoire.getAudience() - 30, 0);
+            Play play = playList.getPlay(performance.getPlayId());
+            int thisAmount = calculateAmount(play.getType(), performance.getAudience());;
+            volumeCredits += Math.max(performance.getAudience() - 30, 0);
 
             if (play.getType() == "comedy") {
-                volumeCredits += Math.floor(repertoire.getAudience() / 5);
+                volumeCredits += Math.floor(performance.getAudience() / 5);
             }
 
-            result += play.getName() + ": " + nF.format(thisAmount/100) + " " + repertoire.getAudience() + " seats\n";
+            result += play.getName() + ": " + nF.format(thisAmount/100) + " " + performance.getAudience() + " seats\n";
             totalAmount += thisAmount;
         }
         result += "Amount owed is " + nF.format(totalAmount/100) + "\n";
@@ -70,13 +70,13 @@ public class Main {
 
         ArrayList<Invoice> invoiceList = new ArrayList<Invoice>();
 
-        Repertoire[] performances = new Repertoire[] {
-            new Repertoire("hamlet", 55),
-            new Repertoire("as-like", 35),
-            new Repertoire("othello", 40),
+        Performance[] performanceList = new Performance[] {
+            new Performance("hamlet", 55),
+            new Performance("as-like", 35),
+            new Performance("othello", 40),
         };
 
-        invoiceList.add(new Invoice("BigCo", performances));
+        invoiceList.add(new Invoice("BigCo", performanceList));
 
         for (Invoice invoice : invoiceList) {
             try {

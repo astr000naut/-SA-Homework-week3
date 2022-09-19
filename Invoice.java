@@ -1,9 +1,9 @@
 public class Invoice {
    
     private String customer;
-    private Repertoire[] performances;
+    private Performance[] performances;
 
-    Invoice(String customer, Repertoire[] performances) {
+    Invoice(String customer, Performance[] performances) {
         this.customer = customer;
         this.performances = performances;
     }
@@ -12,7 +12,7 @@ public class Invoice {
         return this.customer;
     }
 
-    public Repertoire[] getPerformance() {
+    public Performance[] getPerformance() {
         return this.performances;
     }
 }
