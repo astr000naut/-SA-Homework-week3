@@ -11,6 +11,28 @@ class UnknowTypeException extends Exception {
 }
 
 public class Main {
+    public static int calculateAmount(String type, int audience) throws UnknowTypeException {
+        int amount;
+        switch (type) {
+                case "tragedy":
+                amount = 40000;
+                    if (audience > 30) {
+                        amount += 1000 * (audience - 30);
+                    }
+                    break;
+                case "comedy":
+                amount = 30000;
+                    if (audience > 20) {
+                        amount += 10000 + 500 * (audience - 20);
+                    }
+                    amount += 300 * audience;
+                    break;
+                default:
+                    throw new UnknowTypeException(type);
+            }
+        return amount;
+    }
+
     public static String statement(Invoice invoice, PlayList playList) throws UnknowTypeException {
 
         int totalAmount = 0;
@@ -21,29 +43,10 @@ public class Main {
         nF.setMinimumFractionDigits(2);
         nF.setMaximumFractionDigits(2);
 
-
         for (Repertoire repertoire : invoice.getPerformance()) {
 
             Play play = playList.getPlay(repertoire.getPlayId());
-            int thisAmount = 0;
-
-            switch (play.getType()) {
-                case "tragedy":
-                    thisAmount = 40000;
-                    if (repertoire.getAudience() > 30) {
-                        thisAmount += 1000 * (repertoire.getAudience() - 30);
-                    }
-                    break;
-                case "comedy":
-                    thisAmount = 30000;
-                    if (repertoire.getAudience() > 20) {
-                        thisAmount += 10000 + 500 * (repertoire.getAudience() - 20);
-                    }
-                    thisAmount += 300 * repertoire.getAudience();
-                    break;
-                default:
-                    throw new UnknowTypeException(play.getType());
-            }
+            int thisAmount = calculateAmount(play.getType(), repertoire.getAudience());;
             volumeCredits += Math.max(repertoire.getAudience() - 30, 0);
 
             if (play.getType() == "comedy") {
