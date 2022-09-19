@@ -22,13 +22,16 @@ public class Main {
         }
     }
 
+    public static String currencyFormat(int number) {
+        NumberFormat nF = NumberFormat.getCurrencyInstance();
+        nF.setCurrency(Currency.getInstance(Locale.US));
+        nF.setMinimumFractionDigits(2);
+        nF.setMaximumFractionDigits(2); 
+        return nF.format(number / 100);
+    }
+
     public static String statement(Invoice invoice, PlayList playList) {
         try {
-            NumberFormat nF = NumberFormat.getCurrencyInstance();
-            nF.setCurrency(Currency.getInstance(Locale.US));
-            nF.setMinimumFractionDigits(2);
-            nF.setMaximumFractionDigits(2); 
-
             updatePerformanceInfo(invoice, playList);
             
             int totalAmount = 0;
@@ -38,13 +41,13 @@ public class Main {
             for (Performance performance : invoice.getPerformance()) {
                 result +=
                     performance.getPlayName() + ": " +
-                    nF.format(performance.getAmount()/100) + " " +
+                    currencyFormat(performance.getAmount()) + " " +
                     performance.getAudience() + " seats\n";
 
                 totalAmount += performance.getAmount();
                 volumeCredits += performance.getCredit();
             }
-            result += "Amount owed is " + nF.format(totalAmount/100) + "\n";
+            result += "Amount owed is " + currencyFormat(totalAmount) + "\n";
             result += "You earned " + volumeCredits + " credits\n";
             return result;
 
@@ -61,14 +64,13 @@ public class Main {
         playList.addPlay("as-like", "As You Like It", "comedy");
         playList.addPlay("othello", "Othello", "tragedy");
 
-        ArrayList<Invoice> invoiceList = new ArrayList<Invoice>();
-
         Performance[] performanceList = new Performance[] {
             new Performance("hamlet", 55),
             new Performance("as-like", 35),
             new Performance("othello", 40),
         };
-
+        
+        ArrayList<Invoice> invoiceList = new ArrayList<Invoice>();
         invoiceList.add(new Invoice("BigCo", performanceList));
 
         for (Invoice invoice : invoiceList) {
