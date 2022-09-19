@@ -11,54 +11,47 @@ class UnknowTypeException extends Exception {
 }
 
 public class Main {
-    public static int calculateAmount(String type, int audience) throws UnknowTypeException {
-        int amount;
-        switch (type) {
-                case "tragedy":
-                amount = 40000;
-                    if (audience > 30) {
-                        amount += 1000 * (audience - 30);
-                    }
-                    break;
-                case "comedy":
-                amount = 30000;
-                    if (audience > 20) {
-                        amount += 10000 + 500 * (audience - 20);
-                    }
-                    amount += 300 * audience;
-                    break;
-                default:
-                    throw new UnknowTypeException(type);
-            }
-        return amount;
+
+    public static void updatePerformanceInfo(Invoice invoice, PlayList playList) throws UnknowTypeException {
+        for (Performance performance: invoice.getPerformance()) {
+            Play play = playList.getPlay(performance.getPlayId());
+            performance.updatePlayName(play.getName());
+            performance.updatePlayType(play.getType());
+            performance.calculateCredit();
+            performance.calculateAmount();
+        }
     }
 
-    public static String statement(Invoice invoice, PlayList playList) throws UnknowTypeException {
+    public static String statement(Invoice invoice, PlayList playList) {
+        try {
+            NumberFormat nF = NumberFormat.getCurrencyInstance();
+            nF.setCurrency(Currency.getInstance(Locale.US));
+            nF.setMinimumFractionDigits(2);
+            nF.setMaximumFractionDigits(2); 
 
-        int totalAmount = 0;
-        int volumeCredits = 0;
-        String result = "Statement for " + invoice.getCustomer() + "\n";
-        NumberFormat nF = NumberFormat.getCurrencyInstance();
-        nF.setCurrency(Currency.getInstance(Locale.US));
-        nF.setMinimumFractionDigits(2);
-        nF.setMaximumFractionDigits(2);
+            updatePerformanceInfo(invoice, playList);
+            
+            int totalAmount = 0;
+            int volumeCredits = 0;
+            String result = "Statement for " + invoice.getCustomer() + "\n";
 
-        for (Performance performance : invoice.getPerformance()) {
+            for (Performance performance : invoice.getPerformance()) {
+                result +=
+                    performance.getPlayName() + ": " +
+                    nF.format(performance.getAmount()/100) + " " +
+                    performance.getAudience() + " seats\n";
 
-            Play play = playList.getPlay(performance.getPlayId());
-            int thisAmount = calculateAmount(play.getType(), performance.getAudience());;
-            volumeCredits += Math.max(performance.getAudience() - 30, 0);
-
-            if (play.getType() == "comedy") {
-                volumeCredits += Math.floor(performance.getAudience() / 5);
+                totalAmount += performance.getAmount();
+                volumeCredits += performance.getCredit();
             }
+            result += "Amount owed is " + nF.format(totalAmount/100) + "\n";
+            result += "You earned " + volumeCredits + " credits\n";
+            return result;
 
-            result += play.getName() + ": " + nF.format(thisAmount/100) + " " + performance.getAudience() + " seats\n";
-            totalAmount += thisAmount;
+        } catch (UnknowTypeException e) {
+            e.printStackTrace();
+            return e.getMessage();
         }
-        result += "Amount owed is " + nF.format(totalAmount/100) + "\n";
-        result += "You earned " + volumeCredits + " credits\n";
-        return result;
     }
 
     public static void main(String args[]) {
@@ -79,11 +72,7 @@ public class Main {
         invoiceList.add(new Invoice("BigCo", performanceList));
 
         for (Invoice invoice : invoiceList) {
-            try {
-                System.out.println(statement(invoice, playList));
-            } catch (UnknowTypeException e) {
-                e.printStackTrace();
-            }
+            System.out.println(statement(invoice, playList));
         }
     }
 }
