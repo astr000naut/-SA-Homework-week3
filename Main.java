@@ -14,12 +14,12 @@ class UnknowTypeException extends Exception {
 public class Main {
 
     public static void updatePerformanceInfo(Invoice invoice, PlayList playList) throws UnknowTypeException {
-        for (Performance performance: invoice.getPerformanceList()) {
-            Play play = playList.getPlay(performance.getPlayId());
-            performance.updatePlayName(play.getName());
-            performance.updatePlayType(play.getType());
-            performance.calculateCredit();
-            performance.calculateAmount();
+        for (Performance perf: invoice.getPerformanceList()) {
+            Play play = playList.getPlay(perf.getPlayId());
+            perf.updatePlayName(play.getName());
+            perf.updatePlayType(play.getType());
+            perf.calculateCredit();
+            perf.calculateAmount();
         }
     }
 
@@ -67,13 +67,13 @@ public class Main {
         playList.addPlay("as-like", "As You Like It", "comedy");
         playList.addPlay("othello", "Othello", "tragedy");
 
-        List<Performance> performanceList = new ArrayList<Performance>();
-        performanceList.add(new Performance("hamlet", 55));
-        performanceList.add(new Performance("as-like", 35));
-        performanceList.add(new Performance("othello", 40));
+        List<Performance> performances = new ArrayList<Performance>();
+        performances.add(new Performance("hamlet", 55));
+        performances.add(new Performance("as-like", 35));
+        performances.add(new Performance("othello", 40));
   
         ArrayList<Invoice> invoiceList = new ArrayList<Invoice>();
-        invoiceList.add(new Invoice("BigCo", performanceList));
+        invoiceList.add(new Invoice("BigCo", performances));
 
         for (Invoice invoice : invoiceList) {
             System.out.println(statement(invoice, playList));
