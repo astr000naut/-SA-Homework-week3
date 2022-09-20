@@ -14,7 +14,7 @@ class UnknowTypeException extends Exception {
 public class Main {
 
     public static void updatePerformanceInfo(Invoice invoice, PlayList playList) throws UnknowTypeException {
-        for (Performance performance: invoice.getPerformance()) {
+        for (Performance performance: invoice.getPerformanceList()) {
             Play play = playList.getPlay(performance.getPlayId());
             performance.updatePlayName(play.getName());
             performance.updatePlayType(play.getType());
@@ -38,7 +38,7 @@ public class Main {
             int volumeCredits = 0;
             String result = "Statement for " + invoice.getCustomer() + "\n";
 
-            for (Performance performance : invoice.getPerformance()) {
+            for (Performance performance : invoice.getPerformanceList()) {
                 result +=
                     performance.getPlayName() + ": " +
                     currencyFormat(performance.getAmount()) + " " +

@@ -15,7 +15,7 @@ public class Invoice {
         return this.customer;
     }
 
-    public List<Performance> getPerformance() {
+    public List<Performance> getPerformanceList() {
         List<Performance> umodifiableList = Collections.unmodifiableList(this.performances);
         return umodifiableList;
     }
