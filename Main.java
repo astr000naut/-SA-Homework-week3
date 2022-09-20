@@ -40,13 +40,13 @@ public class Main {
             String statementBody = "";
             String statementFooter;
 
-            for (Performance performance : invoice.getPerformanceList()) {
+            for (Performance perf : invoice.getPerformanceList()) {
                 statementBody +=
-                    performance.getPlayName() + ": " +
-                    currencyFormat(performance.getAmount()) + " " +
-                    performance.getAudience() + " seats\n";
-                totalAmount += performance.getAmount();
-                volumeCredits += performance.getCredit();
+                    perf.getPlayName() + ": " +
+                    currencyFormat(perf.getAmount()) + " " +
+                    perf.getAudience() + " seats\n";
+                totalAmount += perf.getAmount();
+                volumeCredits += perf.getCredit();
             }
 
             statementFooter = 
