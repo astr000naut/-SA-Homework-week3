@@ -1,9 +1,9 @@
 public class Performance {
 
     private String playid;
-    private int audience;
     private String playName;
     private String playType;
+    private int audience;
     private int credit;
     private int amount;
 
