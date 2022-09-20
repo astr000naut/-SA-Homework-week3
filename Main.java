@@ -25,7 +25,6 @@ public class Main {
     public static String currencyFormat(int number) {
         NumberFormat nF = NumberFormat.getCurrencyInstance();
         nF.setCurrency(Currency.getInstance(Locale.US));
-        nF.setMinimumFractionDigits(2);
         nF.setMaximumFractionDigits(2); 
         return nF.format(number / 100);
     }
