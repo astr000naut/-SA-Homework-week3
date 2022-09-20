@@ -36,21 +36,24 @@ public class Main {
             
             int totalAmount = 0;
             int volumeCredits = 0;
-            String result = "Statement for " + invoice.getCustomer() + "\n";
+            String statementHeader = "Statement for " + invoice.getCustomer() + "\n";
+            String statementBody = "";
+            String statementFooter;
 
             for (Performance performance : invoice.getPerformanceList()) {
-                result +=
+                statementBody +=
                     performance.getPlayName() + ": " +
                     currencyFormat(performance.getAmount()) + " " +
                     performance.getAudience() + " seats\n";
-
                 totalAmount += performance.getAmount();
                 volumeCredits += performance.getCredit();
             }
-            result += "Amount owed is " + currencyFormat(totalAmount) + "\n";
-            result += "You earned " + volumeCredits + " credits\n";
-            return result;
 
+            statementFooter = 
+                "Amount owed is " + currencyFormat(totalAmount) + "\n" +
+                "You earned " + volumeCredits + " credits\n";
+
+            return statementHeader + statementBody + statementFooter;
         } catch (UnknowTypeException e) {
             e.printStackTrace();
             return e.getMessage();
