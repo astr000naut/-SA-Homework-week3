@@ -53,30 +53,30 @@ public class Performance {
         }
     }
 
-    public static int getAmountOfTragedyType(int audience) {
+    private void calculateAmountTragedyType() {
         int amount = 40000;
-        if (audience > 30) {
-            amount += 1000 * (audience - 30);
+        if (this.audience > 30) {
+            amount += 1000 * (this.audience - 30);
         }
-        return amount;
+        this.amount = amount;
     }
 
-    public static int getAmountOfComedyType(int audience) {
+    private void calculateAmountComedyType() {
         int amount = 30000;
-        if (audience > 20) {
-            amount += 10000 + 500 * (audience - 20);
+        if (this.audience > 20) {
+            amount += 10000 + 500 * (this.audience - 20);
         }
-        amount += 300 * audience;
-        return amount;
+        amount += 300 * this.audience;
+        this.amount = amount;
     }
 
     public void calculateAmount() throws UnknowTypeException {
         switch (this.getPlayType()) {
             case "tragedy":
-                this.amount = getAmountOfTragedyType(this.getAudience());
+                calculateAmountTragedyType();
                 break;
             case "comedy":
-                this.amount = getAmountOfComedyType(this.getAudience());
+                calculateAmountComedyType();
                 break;
             default:
                 throw new UnknowTypeException(this.getPlayType());
