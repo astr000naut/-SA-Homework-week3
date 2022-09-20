@@ -1,9 +1,12 @@
+import java.util.Collections;
+import java.util.List;
+
 public class Invoice {
    
     private String customer;
-    private Performance[] performances;
+    private List<Performance> performances;
 
-    Invoice(String customer, Performance[] performances) {
+    Invoice(String customer, List<Performance> performances) {
         this.customer = customer;
         this.performances = performances;
     }
@@ -12,7 +15,8 @@ public class Invoice {
         return this.customer;
     }
 
-    public Performance[] getPerformance() {
-        return this.performances;
+    public List<Performance> getPerformance() {
+        List<Performance> umodifiableList = Collections.unmodifiableList(this.performances);
+        return umodifiableList;
     }
 }

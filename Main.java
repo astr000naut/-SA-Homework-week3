@@ -2,6 +2,7 @@
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Currency;
+import java.util.List;
 import java.util.Locale;
 
 class UnknowTypeException extends Exception {
@@ -63,12 +64,11 @@ public class Main {
         playList.addPlay("as-like", "As You Like It", "comedy");
         playList.addPlay("othello", "Othello", "tragedy");
 
-        Performance[] performanceList = new Performance[] {
-            new Performance("hamlet", 55),
-            new Performance("as-like", 35),
-            new Performance("othello", 40),
-        };
-        
+        List<Performance> performanceList = new ArrayList<Performance>();
+        performanceList.add(new Performance("hamlet", 55));
+        performanceList.add(new Performance("as-like", 35));
+        performanceList.add(new Performance("othello", 40));
+  
         ArrayList<Invoice> invoiceList = new ArrayList<Invoice>();
         invoiceList.add(new Invoice("BigCo", performanceList));
 
